@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedClin — Medicina e Segurança do Trabalho | Franca SP</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────
+   RESET & TOKENS
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+:root {
+  /* Cores */
+  --bg:        #F8FAFC;
+  --surface:   #FFFFFF;
+  --navy:      #0F172A;
+  --navy-2:    #1E3A5F;
+  --blue:      #2563EB;
+  --blue-lt:   #3B82F6;
+  --blue-bg:   #EFF6FF;
+  --blue-dim:  #DBEAFE;
+  --slate:     #475569;
+  --muted:     #64748B;
+  --border:    #E2E8F0;
+  --border-2:  #CBD5E1;
+  --white:     #FFFFFF;
+  --green:     #16A34A;
+  --green-bg:  #DCFCE7;
+
+  /* Tipografia */
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  /* Sombras */
+  --sh-sm:  0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  --sh-md:  0 4px 16px rgba(15,23,42,.08), 0 2px 6px rgba(15,23,42,.05);
+  --sh-lg:  0 12px 32px rgba(15,23,42,.10), 0 4px 12px rgba(15,23,42,.06);
+
+  /* Espaços */
+  --px: clamp(1.25rem, 5vw, 4rem);
+  --section-y: clamp(3.5rem, 8vw, 6rem);
+
+  /* Nav */
+  --nav-h: 64px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--navy);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* Utilitários de página */
+.page { display: none; }
+.page.active { display: block; }
+button { font-family: var(--font); cursor: pointer; }
+a { color: inherit; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 2px; }
+
+/* ─────────────────────────────────────────
+   NAV
+───────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  height: var(--nav-h);
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--px);
+  transition: box-shadow .3s;
+}
+nav.scrolled { box-shadow: var(--sh-md); }
+
+/* ── LOGO ── */
+.logo {
+  display: flex; align-items: center;
+  background: none; border: none; padding: 0;
+  text-decoration: none; cursor: pointer;
+}
+.logo-img {
+  height: 44px; width: auto; max-width: 160px;
+  object-fit: contain; display: block;
+}
+.ft-logo-img {
+  height: 60px; width: auto;
+  object-fit: contain; display: block;
+  /* Inverte para branco sobre fundo escuro */
+  filter: brightness(0) invert(1);
+  opacity: .95;
+}
+
+.nav-links {
+  display: flex; list-style: none; gap: .25rem;
+}
+.nav-links button {
+  font-size: .78rem; font-weight: 500; color: var(--slate);
+  background: none; border: none; padding: .45rem .75rem;
+  border-radius: 6px; transition: color .2s, background .2s;
+}
+.nav-links button:hover { color: var(--blue); background: var(--blue-bg); }
+
+.nav-cta {
+  font-size: .78rem; font-weight: 600;
+  background: var(--blue); color: #fff; border: none;
+  padding: .5rem 1.25rem; border-radius: 8px;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 2px 8px rgba(37,99,235,.3);
+}
+.nav-cta:hover { background: var(--navy-2); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,.35); }
+
+/* Botão de menu mobile */
+.nav-menu-btn {
+  display: none; background: none; border: none;
+  padding: .4rem; border-radius: 6px; color: var(--navy);
+  transition: background .2s;
+}
+.nav-menu-btn:hover { background: var(--border); }
+
+/* Menu mobile */
+.mobile-menu {
+  display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+  background: var(--white); border-bottom: 1px solid var(--border);
+  padding: 1rem var(--px) 1.25rem;
+  box-shadow: var(--sh-lg); z-index: 850;
+  flex-direction: column; gap: .25rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu button {
+  font-size: .9rem; font-weight: 500; color: var(--slate);
+  background: none; border: none; padding: .7rem .75rem;
+  border-radius: 8px; text-align: left; transition: color .2s, background .2s;
+}
+.mobile-menu button:hover { color: var(--blue); background: var(--blue-bg); }
+.mobile-menu .mob-cta {
+  margin-top: .5rem; background: var(--blue); color: #fff;
+  font-weight: 600; text-align: center; border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(37,99,235,.3);
+}
+.mobile-menu .mob-cta:hover { background: var(--navy-2); color: #fff; }
+
+/* ─────────────────────────────────────────
+   WhatsApp flutuante
+───────────────────────────────────────── */
+.wha-float {
+  position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 800;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,211,102,.45);
+  transition: transform .25s, box-shadow .25s;
+  text-decoration: none;
+}
+.wha-float:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(37,211,102,.55); }
+.wha-float svg { width: 26px; height: 26px; }
+
+/* ─────────────────────────────────────────
+   SEÇÕES — padding padrão
+───────────────────────────────────────── */
+.section-wrap {
+  max-width: 1280px; margin: 0 auto;
+  padding: var(--section-y) var(--px);
+}
+
+.section-label {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .7rem; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--blue);
+  background: var(--blue-bg); border: 1px solid var(--blue-dim);
+  -webkit-text-fill-color: var(--blue);
+  padding: .3rem .8rem; border-radius: 100px;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 700; color: var(--navy);
+  line-height: 1.15; letter-spacing: -.02em;
+}
+.section-title em { font-style: normal; background:linear-gradient(135deg,var(--navy-2) 0%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+
+.section-sub {
+  font-size: clamp(.88rem, 2vw, 1rem);
+  color: var(--slate); line-height: 1.75; margin-top: .75rem;
+}
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+.hero {
+  padding-top: var(--nav-h);
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--border);
+}
+.hero-inner {
+  max-width: 760px; margin: 0 auto;
+  padding: clamp(3.5rem, 9vw, 7rem) var(--px) clamp(3rem, 8vw, 6rem);
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+
+/* Logo centralizada na hero */
+.hero-logo-img {
+  width: clamp(240px, 55vw, 420px);
+  height: auto;
+  display: block;
+  margin-bottom: .75rem;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 16px rgba(37,99,235,.10));
+}
+
+/* Tagline discreta abaixo do nome */
+.hero-tagline {
+  font-size: clamp(.85rem, 2.5vw, 1rem);
+  font-weight: 400; color: var(--muted);
+  letter-spacing: .01em; margin-bottom: 1.75rem;
+}
+
+.hero-desc {
+  font-size: clamp(.9rem, 2vw, 1rem);
+  color: var(--slate); line-height: 1.8;
+  max-width: 480px; margin-bottom: 2.25rem;
+}
+
+/* Botões hero */
+.hero-btns {
+  display: flex; flex-wrap: wrap; gap: .75rem;
+  justify-content: center;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--blue); color: #fff; border: none;
+  font-size: .88rem; font-weight: 600;
+  padding: .85rem 2rem; border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(37,99,235,.3);
+  transition: background .2s, transform .15s, box-shadow .2s;
+}
+.btn-primary:hover { background: var(--navy-2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,.35); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--white); color: var(--navy); border: 1.5px solid var(--border-2);
+  font-size: .88rem; font-weight: 600;
+  padding: .85rem 2rem; border-radius: 8px;
+  transition: border-color .2s, background .2s;
+}
+.btn-secondary:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-bg); }
+
+/* ─────────────────────────────────────────
+   FAIXA MISSÃO
+───────────────────────────────────────── */
+.mission-bar {
+  background: linear-gradient(135deg, #0B1829 0%, #0F2340 40%, #1A3A6E 100%);
+  padding: clamp(2rem, 5vw, 3rem) var(--px);
+}
+.mission-bar-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; gap: clamp(1.5rem, 4vw, 4rem);
+  flex-wrap: wrap;
+}
+.mission-label {
+  font-size: .65rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(255,255,255,.4);
+  margin-bottom: .4rem;
+}
+.mission-title {
+  font-size: clamp(1.2rem, 3vw, 1.55rem);
+  font-weight: 700; color: #fff; white-space: nowrap;
+}
+.mission-divider {
+  width: 1px; height: 3rem; background: rgba(255,255,255,.15); flex-shrink: 0;
+}
+.mission-text {
+  font-size: clamp(.85rem, 2vw, 1rem);
+  color: rgba(255,255,255,.6); line-height: 1.75;
+  max-width: 680px;
+}
+.mission-text strong { color: rgba(255,255,255,.9); font-weight: 600; }
+
+/* ─────────────────────────────────────────
+   QUEM SOMOS
+───────────────────────────────────────── */
+.about { background: var(--white); }
+.about-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding: var(--section-y) var(--px);
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+}
+.about-body p {
+  font-size: clamp(.88rem, 2vw, .98rem);
+  color: var(--slate); line-height: 1.8; margin-top: 1rem;
+}
+.about-body strong { color: var(--navy); font-weight: 600; }
+.about-link {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-size: .82rem; font-weight: 600; color: var(--blue);
+  background: none; border: none; margin-top: 1.5rem;
+  padding: 0; transition: gap .2s; cursor: pointer;
+}
+.about-link:hover { gap: .7rem; }
+
+/* Foto */
+.about-photo {
+  width: 100%; border-radius: 14px;
+  overflow: hidden; box-shadow: var(--sh-lg);
+  aspect-ratio: 4/3;
+}
+.about-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform .5s;
+}
+.about-photo:hover img { transform: scale(1.03); }
+
+/* Cards de estatísticas */
+.about-stats { display: flex; flex-direction: column; gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; }
+.stat-card {
+  background: var(--white); padding: 1.4rem 1.75rem;
+  display: flex; align-items: center; gap: 1.1rem;
+  transition: background .2s;
+}
+.stat-card:hover { background: var(--bg); }
+.stat-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: var(--blue-bg); border: 1px solid var(--blue-dim);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.stat-n {
+  font-size: 1.9rem; font-weight: 800; background:linear-gradient(135deg,var(--navy-2) 0%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height: 1; letter-spacing: -.03em;
+}
+.stat-l {
+  font-size: .72rem; font-weight: 500; color: var(--muted);
+  margin-top: .2rem; line-height: 1.3;
+}
+.crea-badge {
+  background: var(--bg); padding: 1.1rem 1.75rem;
+  display: flex; align-items: center; gap: 1rem;
+  border-top: 1px solid var(--border);
+}
+.crea-badge-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--blue-bg); border: 1px solid var(--blue-dim);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.crea-badge-t { font-size: .8rem; font-weight: 600; color: var(--navy); }
+.crea-badge-s { font-size: .68rem; color: var(--muted); margin-top: .1rem; }
+
+/* ─────────────────────────────────────────
+   SERVIÇOS
+───────────────────────────────────────── */
+.svc { background: var(--bg); border-top: none; }
+.svc-hdr-wrap {
+  background: linear-gradient(135deg, #0B1829 0%, #0F2340 40%, #1A3A6E 100%);
+  padding: clamp(2rem, 5vw, 3rem) var(--px);
+  margin-bottom: 0;
+}
+.svc-hdr-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 1rem;
+}
+.svc-hdr-wrap .section-title { color: #fff; }
+.svc-hdr-wrap .section-title em { background: linear-gradient(135deg, #93C5FD 0%, #60A5FA 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.svc-hdr-wrap .section-label { color: rgba(255,255,255,.7); -webkit-text-fill-color: rgba(255,255,255,.7); background-color: rgba(255,255,255,.08); border-color: rgba(255,255,255,.15); }
+.svc-hdr-sub { font-size: .9rem; color: rgba(255,255,255,.75); line-height: 1.7; max-width: 380px; text-align: center; }
+
+/* Grid de serviços */
+.svc-grid {
+  max-width: 1280px; margin: 0 auto;
+  padding: 0 var(--px) var(--section-y);
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0; background: transparent;
+}
+.svc-card {
+  background: var(--bg);
+  padding: 2rem 1.75rem;
+  cursor: pointer;
+  display: flex; flex-direction: column;
+  transition: background .25s;
+  position: relative;
+  border-top: 2px solid var(--border);
+}
+/* Indicador azul no topo ao hover */
+.svc-card::before {
+  content: ''; position: absolute; top: -2px; left: 0; right: 0; height: 2px;
+  background: transparent; transition: background .25s;
+}
+.svc-card:hover { background: var(--white); }
+.svc-card:hover::before { background: var(--blue); }
+.svc-card:hover .sc-title { color: var(--blue); }
+.svc-card:hover .sc-more { opacity: 1; transform: translateX(0); }
+
+.sc-num {
+  font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+  color: var(--blue-dim); margin-bottom: .9rem;
+  font-variant-numeric: tabular-nums;
+}
+.sc-icon-wrap {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: var(--blue-bg); border: 1px solid var(--blue-dim);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem; flex-shrink: 0;
+}
+.sc-icon-wrap svg { width: 18px; height: 18px; stroke: var(--blue); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sc-title {
+  font-size: .98rem; font-weight: 700; color: var(--navy);
+  margin-bottom: .4rem; line-height: 1.3;
+  transition: color .25s;
+}
+.sc-desc {
+  font-size: .8rem; color: var(--muted); line-height: 1.65; flex: 1;
+}
+.sc-more {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-size: .75rem; font-weight: 600; color: var(--blue);
+  margin-top: 1rem; opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity .25s, transform .25s;
+}
+.svc-card.span2 { grid-column: span 2; }
+.svc-card.span2 .sc-title { font-size: 1.05rem; }
+
+/* ─────────────────────────────────────────
+   CONTATO
+───────────────────────────────────────── */
+.contact-section { background: var(--white); border-top: 1px solid var(--border); }
+.contact-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding: var(--section-y) var(--px);
+  display: grid; grid-template-columns: 1fr 1.3fr; gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: start;
+}
+.ct-info-items { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.75rem; }
+.ct-info-item {
+  display: flex; align-items: flex-start; gap: .85rem;
+  padding: .85rem 1rem;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  transition: border-color .2s;
+}
+.ct-info-item:hover { border-color: var(--blue-dim); }
+.ct-info-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--blue-bg); border: 1px solid var(--blue-dim);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.ct-info-icon svg { width: 14px; height: 14px; stroke: var(--blue); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+.ct-lbl { font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .2rem; }
+.ct-val { font-size: .88rem; font-weight: 500; color: var(--navy); }
+
+/* Formulário */
+.ct-form {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: clamp(1.5rem, 4vw, 2.25rem);
+  box-shadow: var(--sh-sm);
+}
+.ct-form-title { font-size: 1.25rem; font-weight: 700; color: var(--navy); margin-bottom: .25rem; }
+.ct-form-sub { font-size: .8rem; color: var(--muted); margin-bottom: 1.5rem; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.form-grid .full { grid-column: 1 / -1; }
+.form-field { display: flex; flex-direction: column; gap: .3rem; }
+.form-field label {
+  font-size: .68rem; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted);
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: .65rem .9rem;
+  color: var(--navy); font-family: var(--font); font-size: .88rem;
+  outline: none; transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none; resize: none;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder { color: var(--border-2); }
+.btn-submit {
+  width: 100%; margin-top: .5rem;
+  background: var(--blue); color: #fff; border: none;
+  padding: .85rem 1.5rem; border-radius: 8px;
+  font-size: .88rem; font-weight: 600;
+  box-shadow: 0 2px 10px rgba(37,99,235,.3);
+  transition: background .2s, transform .15s, box-shadow .2s;
+}
+.btn-submit:hover { background: var(--navy-2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,.35); }
+
+/* ─────────────────────────────────────────
+   MAPA
+───────────────────────────────────────── */
+.map-section { border-top: 1px solid var(--border); }
+.map-label {
+  max-width: 1280px; margin: 0 auto;
+  padding: 1.5rem var(--px) 0;
+  display: flex; align-items: center; gap: .6rem;
+  font-size: .75rem; font-weight: 600; color: var(--muted);
+}
+.map-label svg { stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; width: 14px; height: 14px; }
+.map-section iframe {
+  display: block; width: 100%; height: 380px; border: none;
+  filter: grayscale(15%) contrast(1.02);
+}
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer {
+  background: var(--navy);
+  padding: clamp(2.5rem, 5vw, 3.5rem) var(--px) 1.75rem;
+}
+.ft-inner {
+  max-width: 1280px; margin: 0 auto;
+}
+.ft-top {
+  display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  margin-bottom: 1.75rem;
+}
+.ft-logo-wrap {
+  display: flex; flex-direction: column; align-items: flex-start;
+  margin-bottom: .85rem;
+}
+.ft-brand-desc {
+  font-size: .78rem; color: rgba(255,255,255,.35);
+  line-height: 1.75; max-width: 230px; font-weight: 300;
+}
+.ft-col h5 {
+  font-size: .65rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(255,255,255,.3);
+  margin-bottom: 1rem;
+}
+.ft-col ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+.ft-col a, .ft-col button {
+  font-size: .8rem; font-weight: 400; color: rgba(255,255,255,.4);
+  background: none; border: none; text-align: left; padding: 0;
+  font-family: var(--font); cursor: pointer;
+  transition: color .2s; display: block; text-decoration: none;
+}
+.ft-col a:hover, .ft-col button:hover { color: rgba(255,255,255,.85); }
+.ft-bottom {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: .75rem;
+  font-size: .72rem; color: rgba(255,255,255,.22); font-weight: 300;
+}
+
+/* ─────────────────────────────────────────
+   PÁGINAS INTERNAS — DETAIL PAGES
+───────────────────────────────────────── */
+.dp { background: var(--bg); min-height: 100vh; padding-top: var(--nav-h); }
+
+/* Header das subpáginas */
+.dp-hero {
+  background: linear-gradient(135deg, #0B1829 0%, #0F2340 40%, #1A3A6E 100%);
+  padding: clamp(2rem, 5vw, 3.5rem) var(--px);
+  position: relative; overflow: hidden;
+}
+/* Detalhe decorativo — círculo suave */
+.dp-hero::after {
+  content: '';
+  position: absolute; right: -100px; top: -100px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: rgba(255,255,255,.025);
+  pointer-events: none;
+}
+.dp-hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+
+/* Botão Voltar — pill, fácil de tocar */
+.backbtn {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-size: .75rem; font-weight: 600;
+  color: rgba(255,255,255,.6);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  padding: .5rem 1rem; border-radius: 100px;
+  cursor: pointer; margin-bottom: 1.5rem;
+  font-family: var(--font);
+  transition: background .2s, color .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.backbtn:hover { background: rgba(255,255,255,.14); color: #fff; }
+
+/* Badge da subpágina */
+.dp-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .68rem; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  padding: .28rem .75rem; border-radius: 100px;
+  margin-bottom: .9rem;
+}
+
+.dp-hero h1 {
+  font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+  font-weight: 800; color: #fff; line-height: 1.1;
+  letter-spacing: -.02em; margin-bottom: .85rem;
+}
+.dp-hero h1 em { font-style: normal; color: rgba(255,255,255,.65); }
+.dp-hero p {
+  font-size: clamp(.88rem, 2vw, 1rem);
+  color: rgba(255,255,255,.5); line-height: 1.75;
+  max-width: 560px;
+}
+
+/* Corpo das subpáginas */
+.dp-body {
+  max-width: 860px; margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) var(--px) clamp(3rem, 7vw, 5rem);
+}
+
+.ds { margin-bottom: 2.5rem; }
+.ds h2 {
+  font-size: 1.2rem; font-weight: 700; color: var(--navy);
+  margin-bottom: .85rem; padding-bottom: .65rem;
+  border-bottom: 2px solid var(--border);
+  position: relative;
+}
+.ds h2::after {
+  content: ''; position: absolute; bottom: -2px; left: 0;
+  width: 32px; height: 2px; background: var(--blue); border-radius: 2px;
+}
+.ds p {
+  font-size: clamp(.87rem, 2vw, .95rem);
+  color: var(--slate); line-height: 1.8; margin-bottom: .75rem;
+}
+.ds strong { color: var(--navy); font-weight: 600; }
+
+/* Lista */
+.dl { list-style: none; display: flex; flex-direction: column; gap: .55rem; margin-bottom: .75rem; }
+.dl li {
+  display: flex; gap: .85rem; align-items: flex-start;
+  font-size: clamp(.85rem, 2vw, .93rem); color: var(--slate); line-height: 1.7;
+}
+.dl li::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue); flex-shrink: 0; margin-top: .58rem;
+}
+
+/* Nota de destaque */
+.dnote {
+  background: var(--blue-bg);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 8px 8px 0;
+  padding: .9rem 1.2rem;
+  font-size: .88rem; color: var(--navy-2); line-height: 1.7;
+  margin-bottom: 1.2rem;
+}
+
+/* Mini-cards dentro de subpáginas */
+.dcards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem; margin: 1.25rem 0;
+}
+.dcard {
+  background: var(--white);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: var(--sh-sm);
+  transition: border-color .2s, box-shadow .2s;
+}
+.dcard:hover { border-color: var(--blue-dim); box-shadow: var(--sh-md); }
+.dcard h4 {
+  font-size: .88rem; font-weight: 700; color: var(--navy);
+  margin-bottom: .35rem;
+}
+.dcard p { font-size: .8rem; color: var(--slate); line-height: 1.65; }
+
+/* CTA block no final das subpáginas */
+.dcta {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--navy-2) 100%);
+  border-radius: 14px; padding: 2rem 2.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap; margin-top: 3rem;
+  box-shadow: 0 8px 32px rgba(37,99,235,.25);
+}
+.dcta h3 {
+  font-size: 1.2rem; font-weight: 800; color: #fff;
+  line-height: 1.2;
+}
+.dcta h3 em { font-style: normal; color: rgba(255,255,255,.7); }
+.dcta p { font-size: .82rem; color: rgba(255,255,255,.55); margin-top: .3rem; }
+.btn-cta {
+  background: rgba(255,255,255,.12); color: #fff;
+  border: 1.5px solid rgba(255,255,255,.25);
+  padding: .75rem 1.75rem; border-radius: 8px;
+  font-size: .85rem; font-weight: 700;
+  font-family: var(--font); cursor: pointer;
+  transition: background .2s, transform .15s;
+  white-space: nowrap;
+}
+.btn-cta:hover { background: rgba(255,255,255,.22); transform: translateY(-1px); }
+
+/* ─────────────────────────────────────────
+   PÁGINAS SIMPLES (Empresas / Parceiros)
+───────────────────────────────────────── */
+.spwrap { padding-top: var(--nav-h); }
+.sp-hero {
+  background: linear-gradient(135deg, #0B1829 0%, #0F2340 40%, #1A3A6E 100%);
+  padding: clamp(2rem, 5vw, 3.5rem) var(--px);
+}
+.sp-inner { max-width: 860px; margin: 0 auto; }
+.sp-inner h1 {
+  font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+  font-weight: 800; color: #fff; line-height: 1.1;
+  letter-spacing: -.02em; margin-bottom: .85rem;
+}
+.sp-inner h1 em { font-style: normal; color: rgba(255,255,255,.65); }
+.sp-inner p { font-size: clamp(.88rem, 2vw, 1rem); color: rgba(255,255,255,.5); line-height: 1.75; max-width: 560px; }
+.sp-body {
+  max-width: 860px; margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) var(--px) clamp(3rem, 7vw, 5rem);
+}
+.sp-body p { font-size: .95rem; color: var(--slate); line-height: 1.8; margin-bottom: 1rem; }
+.sp-body strong { color: var(--navy); font-weight: 600; }
+
+/* ─────────────────────────────────────────
+   RESPONSIVO
+───────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .about-inner { grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+  .about-photo { grid-column: span 2; aspect-ratio: 16/7; }
+  .svc-grid { grid-template-columns: 1fr 1fr; }
+  .svc-card.span2 { grid-column: span 2; }
+  .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .ft-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .mission-divider { display: none; }
+}
+
+@media (max-width: 640px) {
+  :root { --px: 1.1rem; --section-y: 2.5rem; }
+  .nav-links, .nav-cta { display: none; }
+  .nav-menu-btn { display: flex; }
+  .svc-grid { grid-template-columns: 1fr; }
+  .svc-card.span2 { grid-column: span 1; }
+  .svc-card { min-height: unset; }
+  .sc-more { opacity: 1; transform: none; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .full { grid-column: 1; }
+  .ft-top { grid-template-columns: 1fr; }
+  .dcta { flex-direction: column; align-items: flex-start; padding: 1.5rem; }
+  .hero-btns { flex-direction: column; }
+  .btn-primary, .btn-secondary { justify-content: center; width: 100%; }
+  .mission-bar-inner { flex-direction: column; align-items: flex-start; gap: .75rem; }
+  .about-inner { grid-template-columns: 1fr; }
+  .about-photo { grid-column: span 1; aspect-ratio: 4/3; }
+  .about-stats { margin-top: 0; }
+  .dp-hero, .sp-hero { padding: 1.75rem var(--px); }
+  .dp-body, .sp-body { padding: 1.5rem var(--px) 3rem; }
+  .dcards { grid-template-columns: 1fr; }
+  .wha-float { bottom: 1.25rem; right: 1.25rem; width: 48px; height: 48px; }
+  .map-section iframe { height: 280px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════
+     NAVEGAÇÃO
+════════════════════ -->
+<nav id="nav">
+  <button class="logo" onclick="SP('home')">
+    <img class="logo-img" src="images/logo-medclin-nav.png" alt="MedClin — Medicina e Segurança do Trabalho">
+  </button>
+
+  <ul class="nav-links">
+    <li><button onclick="SP('home')">Home</button></li>
+    <li><button onclick="GS('qs-anc')">Quem Somos</button></li>
+    <li><button onclick="GS('svc-anc')">Serviços</button></li>
+    <li><button onclick="GS('ct-anc')">Contato</button></li>
+    <li><button onclick="SP('empresas')">Empresas</button></li>
+    <li><button onclick="SP('parceiros')">Parceiros</button></li>
+  </ul>
+
+  <button class="nav-cta" onclick="GS('ct-anc')">Fale Conosco</button>
+
+  <!-- Hamburguer mobile -->
+  <button class="nav-menu-btn" id="menu-btn" aria-label="Menu">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+</nav>
+
+<!-- Menu mobile -->
+<div class="mobile-menu" id="mobile-menu">
+  <button onclick="SP('home');closeMob()">Home</button>
+  <button onclick="GS('qs-anc');closeMob()">Quem Somos</button>
+  <button onclick="GS('svc-anc');closeMob()">Serviços</button>
+  <button onclick="GS('ct-anc');closeMob()">Contato</button>
+  <button onclick="SP('empresas');closeMob()">Empresas</button>
+  <button onclick="SP('parceiros');closeMob()">Parceiros</button>
+  <button class="mob-cta" onclick="GS('ct-anc');closeMob()">Fale Conosco</button>
+</div>
+
+<!-- WhatsApp flutuante -->
+<a class="wha-float" href="https://wa.me/5516974028368" target="_blank" rel="noopener" aria-label="WhatsApp MedClin">
+  <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+
+<!-- ════════════════════════════════════════
+     PÁGINA HOME
+════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <img src="images/logo-medclin.png" alt="MedClin" class="hero-logo-img">
+
+    <p class="hero-tagline">26 anos cuidando de quem cuida da sua empresa</p>
+
+    <p class="hero-desc">
+      Empresa genuinamente Francana investindo no atendimento ao cliente. Qualidade, agilidade e cuidado com a saúde do trabalhador — do exame admissional ao laudo técnico.
+    </p>
+
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="GS('svc-anc')">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Nossos Serviços
+      </button>
+      <button class="btn-secondary" onclick="GS('ct-anc')">Solicitar Proposta</button>
+    </div>
+  </div>
+</section>
+
+<!-- FAIXA MISSÃO -->
+<div class="mission-bar">
+  <div class="mission-bar-inner">
+    <div>
+      <div class="mission-label">Nossa Missão</div>
+      <div class="mission-title">Saúde do Trabalhador</div>
+    </div>
+    <div class="mission-divider"></div>
+    <p class="mission-text">Qualidade e agilidade no atendimento em Medicina e Segurança do Trabalho, visando sempre a <strong>Saúde do Trabalhador</strong>. Soluções personalizadas com total conformidade legal para empresas de todos os portes.</p>
+  </div>
+</div>
+
+<!-- QUEM SOMOS -->
+<div id="qs-anc" class="about">
+  <div class="about-inner">
+    <div class="about-body">
+      <div class="section-label">Quem somos</div>
+      <h2 class="section-title">Uma clínica <em>Francana</em><br>há 26 anos</h2>
+      <p>Empresa genuinamente Francana, investindo cada vez mais no atendimento ao cliente. Somos referenciados pelo CREA e contamos com equipe multidisciplinar: médicos do trabalho, engenheiros de segurança e técnicos especializados.</p>
+      <p>Nosso <strong>laboratório próprio</strong> representa diferencial significativo — agilidade nos resultados, controle de qualidade e integração direta com o PCMSO de cada empresa parceira.</p>
+      <button class="about-link" onclick="GS('ct-anc')">
+        Falar com nossa equipe
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div class="about-photo">
+      <img src="images/medico-atendimento.png" alt="Médico em atendimento — MedClin" loading="lazy">
+    </div>
+
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="7.5"/><path d="M10 6v4l2.5 2.5"/></svg>
+        </div>
+        <div>
+          <div class="stat-n">26+</div>
+          <div class="stat-l">Anos de atuação em Franca e região</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M10 8v4M8 10h4"/></svg>
+        </div>
+        <div>
+          <div class="stat-n">Lab.</div>
+          <div class="stat-l">Laboratório próprio integrado</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/></svg>
+        </div>
+        <div>
+          <div class="stat-n">11</div>
+          <div class="stat-l">Serviços especializados disponíveis</div>
+        </div>
+      </div>
+      <div class="crea-badge">
+        <div class="crea-badge-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#2563EB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5L2 4v4.5c0 3.2 2.5 5.5 6 6 3.5-.5 6-2.8 6-6V4L8 1.5z"/><path d="M5.5 8l2 2 3-3"/></svg>
+        </div>
+        <div>
+          <div class="crea-badge-t">Referenciado pelo CREA</div>
+          <div class="crea-badge-s">Conselho Regional de Engenharia — SP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVIÇOS -->
+<div id="svc-anc" class="svc">
+  <div class="svc-hdr-wrap">
+    <div class="svc-hdr-inner">
+      <div>
+        <div class="section-label">O que oferecemos</div>
+        <h2 class="section-title">Nossos <em>Serviços</em></h2>
+      </div>
+      <p class="svc-hdr-sub">Cobertura completa em medicina ocupacional e segurança do trabalho para manter sua empresa em total conformidade legal.</p>
+    </div>
+  </div>
+
+  <div class="svc-grid">
+
+    <div class="svc-card" onclick="SD('exames')">
+      <div class="sc-num">01</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><path d="M9 2a5 5 0 100 10A5 5 0 009 2zM4 16c0-2.2 2.2-4 5-4s5 1.8 5 4"/></svg>
+      </div>
+      <div class="sc-title">Exames Ocupacionais</div>
+      <div class="sc-desc">Admissionais, demissionais, periódicos, mudança de função e retorno ao trabalho.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card" onclick="SD('pcmso')">
+      <div class="sc-num">02</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><path d="M3 9h12M9 3v12"/><rect x="2" y="2" width="14" height="14" rx="2"/></svg>
+      </div>
+      <div class="sc-title">PCMSO</div>
+      <div class="sc-desc">Programa de Controle Médico em Saúde Ocupacional conforme NR-7.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card" onclick="SD('pgr')">
+      <div class="sc-num">03</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><path d="M9 2L3 5v6c0 3.3 2.7 5.4 6 6 3.3-.6 6-2.7 6-6V5L9 2z"/></svg>
+      </div>
+      <div class="sc-title">PGR</div>
+      <div class="sc-desc">Programa de Gerenciamento de Riscos — substitui o PPRA conforme NR-1.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card" onclick="SD('ltcat')">
+      <div class="sc-num">04</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><path d="M4 14V7l5-5 5 5v7H4zM7 14v-4h4v4"/></svg>
+      </div>
+      <div class="sc-title">LTCAT</div>
+      <div class="sc-desc">Laudo Técnico de Condições Ambientais para aposentadoria especial.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card" onclick="SD('excompl')">
+      <div class="sc-num">05</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="6.5"/><path d="M9 6.5v2.5l1.5 1.5"/></svg>
+      </div>
+      <div class="sc-title">Exames Complementares</div>
+      <div class="sc-desc">Audiometria, RX, ECG, acuidade visual, dinamometria, espirometria e outros.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card" onclick="SD('ppp')">
+      <div class="sc-num">06</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><path d="M11 3H4a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V7l-4-4z"/><path d="M11 3v4h4M6 9h6M6 12h4"/></svg>
+      </div>
+      <div class="sc-title">PPP</div>
+      <div class="sc-desc">Perfil Profissiográfico Previdenciário para benefícios junto ao INSS.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card" onclick="SD('cursos')">
+      <div class="sc-num">07</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><path d="M9 2l7 4-7 4-7-4 7-4z"/><path d="M2 10l7 4 7-4"/></svg>
+      </div>
+      <div class="sc-title">Cursos — CIPA</div>
+      <div class="sc-desc">Formação da Comissão Interna de Prevenção de Acidentes conforme NR-5.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card" onclick="SD('pcmat')">
+      <div class="sc-num">08</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><rect x="3" y="3" width="12" height="12" rx="1.5"/><path d="M7 9l2 2 4-4"/></svg>
+      </div>
+      <div class="sc-title">PCMAT</div>
+      <div class="sc-desc">Programa de Controle de Meio Ambiente de Trabalho — NR-18.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card" onclick="SD('laudos')">
+      <div class="sc-num">09</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><path d="M9 4v4l3 3"/><circle cx="9" cy="9" r="6.5"/></svg>
+      </div>
+      <div class="sc-title">Laudos Ergonômicos</div>
+      <div class="sc-desc">Avaliação ergonômica conforme NR-17 para prevenção de LER/DORT.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card" onclick="SD('assessoria')">
+      <div class="sc-num">10</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><path d="M9 2L3 5v5c0 3.5 2.7 5.7 6 6.5 3.3-.8 6-3 6-6.5V5L9 2z"/><path d="M6.5 9l2 2 3.5-3.5"/></svg>
+      </div>
+      <div class="sc-title">Assessoria</div>
+      <div class="sc-desc">Engenheiros do Trabalho para cumprimento das exigências do Ministério do Trabalho.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+    <div class="svc-card span2" onclick="SD('laboratorio')">
+      <div class="sc-num">11</div>
+      <div class="sc-icon-wrap">
+        <svg viewBox="0 0 18 18"><path d="M6 3v6l-3 6h12l-3-6V3"/><path d="M6 3h6"/></svg>
+      </div>
+      <div class="sc-title">Laboratório Próprio</div>
+      <div class="sc-desc">Estrutura própria integrada à clínica — resultados ágeis e conexão direta com o PCMSO da sua empresa.</div>
+      <div class="sc-more">Saiba mais <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+
+  </div>
+</div><!-- /svc -->
+
+
+
+<!-- CONTATO -->
+<div id="ct-anc" class="contact-section">
+  <div class="contact-inner">
+    <div>
+      <div class="section-label">Fale conosco</div>
+      <h2 class="section-title">Entre em<br><em>Contato</em></h2>
+      <p class="section-sub">Nossa equipe está pronta para atender sua empresa. Solicite uma proposta personalizada.</p>
+
+      <div class="ct-info-items">
+        <div class="ct-info-item">
+          <div class="ct-info-icon">
+            <svg viewBox="0 0 14 14"><path d="M7 1.5C4.5 1.5 2.5 3.5 2.5 6 2.5 9.5 7 13 7 13S11.5 9.5 11.5 6c0-2.5-2-4.5-4.5-4.5zm0 6a1.7 1.7 0 110-3.4 1.7 1.7 0 010 3.4z" stroke-width="1.1"/></svg>
+          </div>
+          <div><div class="ct-lbl">Endereço</div><div class="ct-val">Rua Thomaz Gonzaga, 1627 — Centro, Franca SP</div></div>
+        </div>
+        <div class="ct-info-item">
+          <div class="ct-info-icon">
+            <svg viewBox="0 0 14 14"><path d="M3.5 2.5c.4.9.9 2.1.4 2.6L3 5.9c.9 1.7 3.1 3.9 4.8 4.8l1.2-1.2c.5-.5 1.7 0 2.6.4v1.7c0 .5-.4.9-.9.9C5 12.5 1.5 9 1.5 3.4c0-.5.4-.9.9-.9l1.1.0z" stroke-width="1.1"/></svg>
+          </div>
+          <div><div class="ct-lbl">Telefone</div><div class="ct-val">(16) 3722-6135</div></div>
+        </div>
+        <div class="ct-info-item">
+          <div class="ct-info-icon">
+            <svg viewBox="0 0 14 14"><rect x="1.5" y="3" width="11" height="8" rx="1.2" stroke-width="1.1"/><path d="M1.5 4.5l5.5 4 5.5-4" stroke-width="1.1" stroke-linecap="round"/></svg>
+          </div>
+          <div><div class="ct-lbl">E-mail</div><div class="ct-val">medclin@medclinonline.com.br</div></div>
+        </div>
+        <div class="ct-info-item">
+          <div class="ct-info-icon">
+            <svg viewBox="0 0 14 14" fill="none" stroke="#2563EB" stroke-width="1.1"><path d="M10.5 8.8c-.17-.09-1.03-.51-1.19-.57-.16-.06-.28-.09-.39.09-.12.17-.45.57-.55.68-.1.12-.2.13-.38.04-.17-.09-.73-.27-1.4-.86-.52-.46-.87-1.03-.97-1.21-.1-.17-.01-.27.08-.35.08-.08.17-.2.26-.31.09-.1.12-.17.17-.29.06-.12.03-.22-.01-.31-.04-.09-.39-.95-.54-1.3-.14-.34-.29-.29-.39-.3-.1 0-.22-.01-.33-.01s-.3.04-.46.22c-.16.17-.61.6-.61 1.46s.62 1.69.71 1.81c.09.12 1.23 1.88 2.98 2.64.41.18.74.29.99.37.42.13.8.11 1.1.07.33-.05 1.03-.42 1.18-.83.14-.41.14-.75.1-.83-.04-.07-.16-.12-.33-.2zm-3.19 4.35h-.002A5.8 5.8 0 014.35 12.2l-.21-.12-2.2.58.58-2.14-.14-.22A5.8 5.8 0 011.5 7c0-3.2 2.6-5.8 5.8-5.8 1.55 0 3.01.6 4.1 1.7a5.77 5.77 0 011.7 4.11c-.002 3.2-2.61 5.8-5.8 5.8z"/></svg>
+          </div>
+          <div>
+            <div class="ct-lbl">WhatsApp</div>
+            <div class="ct-val"><a href="https://wa.me/5516974028368" style="text-decoration:none;color:inherit">(16) 97402-8368</a></div>
+          </div>
+        </div>
+        <div class="ct-info-item">
+          <div class="ct-info-icon">
+            <svg viewBox="0 0 14 14" fill="none" stroke="#2563EB" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="10" height="10" rx="2.5"/><circle cx="7" cy="7" r="2.5"/><circle cx="10" cy="4" r=".5" fill="#2563EB" stroke="none"/></svg>
+          </div>
+          <div>
+            <div class="ct-lbl">Instagram</div>
+            <div class="ct-val"><a href="https://instagram.com/medclinfranca" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">@medclinfranca</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulário -->
+    <div class="ct-form">
+      <div class="ct-form-title">Solicite uma proposta</div>
+      <div class="ct-form-sub">Respondemos em até 24 horas úteis</div>
+      <div class="form-grid">
+        <div class="form-field"><label>Nome</label><input type="text" placeholder="Seu nome"></div>
+        <div class="form-field"><label>Empresa</label><input type="text" placeholder="Nome da empresa"></div>
+        <div class="form-field"><label>E-mail</label><input type="email" placeholder="email@empresa.com.br"></div>
+        <div class="form-field"><label>Telefone</label><input type="tel" placeholder="(16) 9 0000-0000"></div>
+        <div class="form-field full"><label>Serviço de interesse</label>
+          <select>
+            <option disabled selected value="">Selecione um serviço</option>
+            <option>Exames Ocupacionais</option><option>PCMSO</option><option>PGR</option>
+            <option>LTCAT</option><option>Exames Complementares</option><option>PPP</option>
+            <option>Cursos — CIPA</option><option>PCMAT</option><option>Laudos Ergonômicos</option>
+            <option>Assessoria</option><option>Laboratório</option><option>Múltiplos serviços</option>
+          </select>
+        </div>
+        <div class="form-field full"><label>Mensagem</label><textarea rows="4" placeholder="Descreva sua necessidade..."></textarea></div>
+      </div>
+      <button class="btn-submit" id="fsub">Enviar mensagem</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAPA -->
+<div class="map-section">
+  <div class="map-label">
+    <svg viewBox="0 0 14 14"><path d="M7 1.5C4.5 1.5 2.5 3.5 2.5 6 2.5 9.5 7 13 7 13S11.5 9.5 11.5 6c0-2.5-2-4.5-4.5-4.5zm0 6a1.7 1.7 0 110-3.4 1.7 1.7 0 010 3.4z" stroke-width="1.1"/></svg>
+    Rua Thomaz Gonzaga, 1627 — Centro, Franca SP
+  </div>
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.9876543!2d-47.4018!3d-20.5374!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b0f9a8b8f9a8b9%3A0x0!2sRua%20Thomaz%20Gonzaga%2C%201627%20-%20Centro%2C%20Franca%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr"
+    allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+    title="Localização MedClin — Rua Thomaz Gonzaga, 1627, Franca SP">
+  </iframe>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div>
+        <div class="ft-logo-wrap">
+          <img class="ft-logo-img" src="images/logo-medclin.png" alt="MedClin">
+        </div>
+        <p class="ft-brand-desc">Assessoria em Medicina e Segurança do Trabalho. 26 anos de dedicação à saúde do trabalhador em Franca e região.</p>
+      </div>
+      <div class="ft-col"><h5>Serviços</h5><ul>
+        <li><button onclick="SD('exames')">Exames Ocupacionais</button></li>
+        <li><button onclick="SD('pcmso')">PCMSO</button></li>
+        <li><button onclick="SD('pgr')">PGR</button></li>
+        <li><button onclick="SD('ltcat')">LTCAT</button></li>
+        <li><button onclick="SD('excompl')">Exames Complementares</button></li>
+        <li><button onclick="SD('laudos')">Laudos Ergonômicos</button></li>
+        <li><button onclick="SD('laboratorio')">Laboratório</button></li>
+      </ul></div>
+      <div class="ft-col"><h5>Navegação</h5><ul>
+        <li><button onclick="SP('home')">Home</button></li>
+        <li><button onclick="GS('qs-anc')">Quem Somos</button></li>
+        <li><button onclick="GS('ct-anc')">Contato</button></li>
+        <li><button onclick="SP('empresas')">Empresas</button></li>
+        <li><button onclick="SP('parceiros')">Parceiros</button></li>
+      </ul></div>
+      <div class="ft-col"><h5>Contato</h5><ul>
+        <li><a>Rua Thomaz Gonzaga, 1627</a></li>
+        <li><a>Centro — Franca, SP</a></li>
+        <li><a href="tel:+551637226135">(16) 3722-6135</a></li>
+        <li><a href="https://wa.me/5516974028368">(16) 97402-8368</a></li>
+        <li><a>medclin@medclinonline.com.br</a></li>
+        <li><a href="https://instagram.com/medclinfranca" target="_blank" rel="noopener">@medclinfranca</a></li>
+      </ul></div>
+    </div>
+    <div class="ft-bottom">
+      <span>© 2025 MedClin — Medicina e Segurança do Trabalho — Franca SP</span>
+      <span>Referenciada pelo CREA — São Paulo</span>
+    </div>
+  </div>
+</footer>
+</div><!-- /page-home -->
+
+
+<!-- ════════════════════════════════════════
+     PÁGINAS DE DETALHE DE SERVIÇO
+════════════════════════════════════════ -->
+
+<!-- Exames Ocupacionais -->
+<div id="page-detail-exames" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">Exames Ocupacionais</div>
+    <h1>Exames Admissional, Demissional,<br>Periódico, <em>Mudança de Função</em><br>e Retorno ao Trabalho</h1>
+    <p>Exames obrigatórios pela CLT para garantir a saúde e aptidão dos trabalhadores em cada fase do vínculo empregatício.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>Exame Admissional</h2>
+      <p><strong>Obrigatório e indispensável</strong> para a assinatura de um contrato formal de trabalho. O médico do Trabalho avalia o candidato ao emprego, concluindo pela aptidão ou não para o exercício da função. O resultado é emitido através do <strong>Atestado Médico de Capacidade Funcional</strong>.</p>
+    </div>
+    <div class="ds"><h2>Exame Demissional</h2>
+      <p>Realizado após o desligamento do trabalhador. Atesta as condições de saúde no momento da demissão, evitando alegações futuras relacionadas a doenças ocupacionais.</p>
+      <p>O <strong>Atestado de Saúde Ocupacional (ASO)</strong> emitido é indispensável para a homologação do acerto do empregado perante o Ministério do Trabalho ou Sindicato da Categoria.</p>
+    </div>
+    <div class="ds"><h2>Exame Periódico</h2>
+      <p>Acompanha o estado de saúde do trabalhador durante o vínculo empregatício. Todos os exames são inseridos no PCMSO — documento sigiloso sob responsabilidade do Médico do Trabalho.</p>
+    </div>
+    <div class="ds"><h2>Mudança de Função e Retorno ao Trabalho</h2>
+      <div class="dcards">
+        <div class="dcard"><h4>Mudança de Função</h4><p>Realizado sempre que o empregado for transferido de função, avaliando aptidão para novas atividades e riscos envolvidos.</p></div>
+        <div class="dcard"><h4>Retorno ao Trabalho</h4><p>Obrigatório após afastamento igual ou superior a 30 dias por doença ou acidente de qualquer natureza.</p></div>
+      </div>
+    </div>
+    <div class="dcta">
+      <div><h3>Agende seus <em>exames</em></h3><p>Atendimento ágil para sua empresa</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Agendamento</button>
+    </div>
+  </div>
+</div>
+
+<!-- PCMSO -->
+<div id="page-detail-pcmso" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">NR-7</div>
+    <h1>PCMSO — Programa de Controle<br>Médico em <em>Saúde Ocupacional</em></h1>
+    <p>Conjunto de procedimentos legais para prevenir e diagnosticar precocemente os danos à saúde decorrentes do trabalho.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>O que é o PCMSO?</h2>
+      <p>Procedimento legal estabelecido pela CLT mediante a <strong>Norma Regulamentadora 7</strong>, criado em 1994. Visa proteger a Saúde Ocupacional dos trabalhadores por meio de monitoramento médico sistemático e periódico.</p>
+    </div>
+    <div class="ds"><h2>Exames obrigatórios</h2>
+      <ul class="dl">
+        <li>Exame admissional</li><li>Exame periódico</li>
+        <li>Exame de retorno ao trabalho</li><li>Exame de mudança de função</li>
+        <li>Exame demissional</li>
+      </ul>
+      <div class="dnote">O PCMSO deve ser compatível com o PGR para identificar e controlar os riscos à saúde dos trabalhadores de forma integrada.</div>
+    </div>
+    <div class="ds"><h2>Obrigatoriedade</h2>
+      <p>Todas as empresas que admitam empregados são obrigadas a elaborar e implementar o PCMSO, independentemente do número de empregados ou grau de risco da atividade.</p>
+    </div>
+    <div class="dcta">
+      <div><h3>Elabore seu <em>PCMSO</em></h3><p>Médicos do trabalho especializados</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Proposta</button>
+    </div>
+  </div>
+</div>
+
+<!-- PGR -->
+<div id="page-detail-pgr" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">Segurança do Trabalho</div>
+    <h1>PGR — Programa de<br><em>Gerenciamento de Riscos</em></h1>
+    <p>Substitui o PPRA com exigências mais abrangentes para identificação, avaliação e controle dos riscos ocupacionais.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>O que é o PGR?</h2>
+      <p>Exigido pela <strong>NR-1 atualizada</strong>, o PGR é o principal instrumento de gestão de riscos nas empresas. Deve abranger todos os riscos ocupacionais existentes no ambiente de trabalho.</p>
+    </div>
+    <div class="ds"><h2>Documentos que compõem</h2>
+      <div class="dcards">
+        <div class="dcard"><h4>Inventário de Riscos</h4><p>Identificação e avaliação de todos os riscos físicos, químicos, biológicos, ergonômicos e de acidentes.</p></div>
+        <div class="dcard"><h4>Plano de Ação</h4><p>Medidas de prevenção para eliminação ou controle dos riscos identificados no inventário.</p></div>
+      </div>
+    </div>
+    <div class="ds"><h2>Obrigatoriedade</h2>
+      <p>Obrigatório para todas as empresas que possuam empregados regidos pela CLT, conforme determina a NR-1 do Ministério do Trabalho e Emprego.</p>
+    </div>
+    <div class="dcta">
+      <div><h3>Elabore seu <em>PGR</em></h3><p>Engenheiros de Segurança do Trabalho</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Proposta</button>
+    </div>
+  </div>
+</div>
+
+<!-- LTCAT -->
+<div id="page-detail-ltcat" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">Previdência Social</div>
+    <h1>LTCAT — Laudo Técnico das<br><em>Condições Ambientais</em></h1>
+    <p>Documento técnico exigido pelo INSS para comprovação de exposição a agentes nocivos e reconhecimento de aposentadoria especial.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>O que é o LTCAT?</h2>
+      <p>O <strong>Laudo Técnico das Condições Ambientais do Trabalho</strong> é um documento elaborado por Médico do Trabalho ou Engenheiro de Segurança que comprova a exposição do trabalhador a agentes nocivos à saúde.</p>
+    </div>
+    <div class="ds"><h2>Agentes avaliados</h2>
+      <div class="dcards">
+        <div class="dcard"><h4>Agentes Físicos</h4><p>Ruído, vibração, radiações, temperaturas extremas, pressões anormais.</p></div>
+        <div class="dcard"><h4>Agentes Químicos</h4><p>Poeiras, fumos, gases, névoas, neblinas e vapores nocivos.</p></div>
+        <div class="dcard"><h4>Agentes Biológicos</h4><p>Vírus, bactérias, parasitas, fungos e outros agentes biológicos.</p></div>
+      </div>
+    </div>
+    <div class="dcta">
+      <div><h3>Elabore o <em>LTCAT</em></h3><p>Profissionais legalmente habilitados</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Laudo</button>
+    </div>
+  </div>
+</div>
+
+<!-- Exames Complementares -->
+<div id="page-detail-excompl" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">Diagnóstico Clínico</div>
+    <h1>Exames <em>Complementares</em></h1>
+    <p>Estrutura própria para realização de exames clínicos e laboratoriais com agilidade e precisão.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>Exames disponíveis</h2>
+      <div class="dcards">
+        <div class="dcard"><h4>Audiometria</h4><p>Avaliação da acuidade auditiva conforme NR-7 e Portaria 19.</p></div>
+        <div class="dcard"><h4>Raio-X</h4><p>Radiografia de tórax e outros segmentos conforme indicação clínica.</p></div>
+        <div class="dcard"><h4>ECG</h4><p>Eletrocardiograma para avaliação cardíaca e cardiovascular.</p></div>
+        <div class="dcard"><h4>Acuidade Visual</h4><p>Avaliação da visão por optometria conforme função do trabalhador.</p></div>
+        <div class="dcard"><h4>Espirometria</h4><p>Avaliação da função respiratória para expostos a poeiras e gases.</p></div>
+        <div class="dcard"><h4>Dinamometria</h4><p>Avaliação de força muscular para funções com esforço físico.</p></div>
+      </div>
+    </div>
+    <div class="dcta">
+      <div><h3>Agende os <em>exames</em></h3><p>Resultados ágeis integrados ao PCMSO</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Agendamento</button>
+    </div>
+  </div>
+</div>
+
+<!-- PPP -->
+<div id="page-detail-ppp" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">Previdência Social</div>
+    <h1>PPP — Perfil <em>Profissiográfico</em><br>Previdenciário</h1>
+    <p>Documento que reúne o histórico laboral do trabalhador, obrigatório para concessão de benefícios previdenciários.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>O que é o PPP?</h2>
+      <p>O <strong>Perfil Profissiográfico Previdenciário</strong> é um formulário preenchido pela empresa que reúne, entre outras informações, dados administrativos, registros ambientais e resultados de monitoração biológica durante o período em que o trabalhador esteve exposto a riscos.</p>
+    </div>
+    <div class="ds"><h2>Quando é exigido</h2>
+      <ul class="dl">
+        <li>Solicitação de aposentadoria especial junto ao INSS</li>
+        <li>Reconhecimento de nexo entre doença e atividade laboral</li>
+        <li>Emissão do CAT — Comunicação de Acidente de Trabalho</li>
+        <li>Demissão de trabalhador exposto a agentes nocivos</li>
+      </ul>
+    </div>
+    <div class="dcta">
+      <div><h3>Elabore o <em>PPP</em></h3><p>Médicos e engenheiros habilitados</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Proposta</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cursos / CIPA -->
+<div id="page-detail-cursos" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">NR-5 — Treinamentos</div>
+    <h1>Cursos e<br><em>Formação em CIPA</em></h1>
+    <p>Formação da Comissão Interna de Prevenção de Acidentes e treinamentos em Normas Regulamentadoras.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>CIPA — NR-5</h2>
+      <p>A <strong>Comissão Interna de Prevenção de Acidentes</strong> é obrigatória para empresas com um mínimo de empregados estabelecido em tabela específica da NR-5. Realiza reuniões mensais para identificar riscos e propor medidas preventivas.</p>
+    </div>
+    <div class="ds"><h2>Treinamentos disponíveis</h2>
+      <div class="dcards">
+        <div class="dcard"><h4>NR-5 — CIPA</h4><p>Formação de membros da Comissão Interna de Prevenção de Acidentes.</p></div>
+        <div class="dcard"><h4>NR-10</h4><p>Segurança em Instalações e Serviços em Eletricidade.</p></div>
+        <div class="dcard"><h4>NR-12</h4><p>Segurança no Trabalho em Máquinas e Equipamentos.</p></div>
+        <div class="dcard"><h4>NR-35</h4><p>Trabalho em Altura — prevenção de quedas e riscos associados.</p></div>
+      </div>
+    </div>
+    <div class="dcta">
+      <div><h3>Capacite sua <em>equipe</em></h3><p>Treinamentos in-company e na clínica</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Treinamento</button>
+    </div>
+  </div>
+</div>
+
+<!-- PCMAT -->
+<div id="page-detail-pcmat" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">NR-18 — Construção Civil</div>
+    <h1>PCMAT — Programa de<br><em>Condições e Meio Ambiente</em></h1>
+    <p>Obrigatório para canteiros de obras com mais de 20 trabalhadores, assegurando a segurança na construção civil.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>O que é o PCMAT?</h2>
+      <p>Exigido pela <strong>NR-18</strong> para estabelecimentos com 20 ou mais trabalhadores. Elaborado por profissional legalmente habilitado em Segurança do Trabalho.</p>
+    </div>
+    <div class="ds"><h2>Documentos que compõem</h2>
+      <ul class="dl">
+        <li>Memorial sobre condições e meio ambiente de trabalho nas atividades e operações</li>
+        <li>Projeto de execução das proteções coletivas conforme etapas da obra</li>
+        <li>Especificação técnica das proteções coletivas e individuais a serem utilizadas</li>
+        <li>Cronograma de implantação das medidas preventivas</li>
+        <li>Layout inicial do canteiro de obras</li>
+        <li>Programa educativo de prevenção de acidentes e doenças</li>
+      </ul>
+    </div>
+    <div class="dcta">
+      <div><h3>Elabore o <em>PCMAT</em></h3><p>Engenheiros de Segurança habilitados</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Proposta</button>
+    </div>
+  </div>
+</div>
+
+<!-- Laudos Ergonômicos -->
+<div id="page-detail-laudos" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">NR-17 — Ergonomia</div>
+    <h1>Laudos <em>Ergonômicos</em></h1>
+    <p>Avaliação ergonômica do ambiente de trabalho para prevenção de LER/DORT e conformidade com a NR-17.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>O que é o Laudo Ergonômico?</h2>
+      <p>Documento técnico que avalia as condições ergonômicas do trabalho, identificando riscos posturais, esforço repetitivo e condições inadequadas. Fundamental para prevenção de <strong>LER/DORT</strong>.</p>
+    </div>
+    <div class="ds"><h2>Aspectos avaliados</h2>
+      <div class="dcards">
+        <div class="dcard"><h4>Postos de Trabalho</h4><p>Mobiliário, equipamentos, layout e condições físicas do ambiente.</p></div>
+        <div class="dcard"><h4>Levantamento de Cargas</h4><p>Atividades com transporte e levantamento manual de cargas.</p></div>
+        <div class="dcard"><h4>Movimentos Repetitivos</h4><p>Tarefas com alta repetitividade causadoras de LER/DORT.</p></div>
+        <div class="dcard"><h4>Condições Ambientais</h4><p>Iluminação, temperatura, umidade e ruído no ambiente.</p></div>
+      </div>
+    </div>
+    <div class="dcta">
+      <div><h3>Solicite seu <em>Laudo Ergonômico</em></h3><p>Profissionais habilitados em ergonomia</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Laudo</button>
+    </div>
+  </div>
+</div>
+
+<!-- Assessoria -->
+<div id="page-detail-assessoria" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">Consultoria</div>
+    <h1>Assessoria em<br><em>Segurança do Trabalho</em></h1>
+    <p>Engenheiros do Trabalho e equipe multidisciplinar para atendimento integral às exigências do Ministério do Trabalho.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>O que oferecemos</h2>
+      <ul class="dl">
+        <li>Elaboração e implementação de todos os programas obrigatórios de segurança</li>
+        <li>Assessoria na implantação do eSocial — módulo SST</li>
+        <li>Treinamentos para NRs — NR-10, NR-12, NR-35 e demais</li>
+        <li>Investigação e análise de acidentes de trabalho</li>
+        <li>Elaboração de SIPAT — Semana Interna de Prevenção de Acidentes</li>
+        <li>Visitas técnicas periódicas para acompanhamento das condições de trabalho</li>
+        <li>Emissão de CAT — Comunicação de Acidente de Trabalho</li>
+        <li>Adequação às Normas Regulamentadoras vigentes</li>
+      </ul>
+    </div>
+    <div class="dcta">
+      <div><h3>Conte com nossa <em>Assessoria</em></h3><p>Sua empresa em conformidade total</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Solicitar Proposta</button>
+    </div>
+  </div>
+</div>
+
+<!-- Laboratório Próprio -->
+<div id="page-detail-laboratorio" class="page dp">
+  <div class="dp-hero"><div class="dp-hero-inner">
+    <button class="backbtn" onclick="GB()">← Voltar</button>
+    <div class="dp-badge">Estrutura Própria</div>
+    <h1>Laboratório <em>Próprio</em></h1>
+    <p>Diferencial MedClin: laboratório de análises clínicas integrado, com resultados ágeis e conexão direta ao PCMSO.</p>
+  </div></div>
+  <div class="dp-body">
+    <div class="ds"><h2>Nosso laboratório</h2>
+      <p>A MedClin conta com <strong>laboratório próprio</strong> para exames laboratoriais — garantindo agilidade nos resultados, controle de qualidade e integração direta com o PCMSO de cada empresa parceira.</p>
+    </div>
+    <div class="ds"><h2>Exames realizados</h2>
+      <div class="dcards">
+        <div class="dcard"><h4>Hemograma Completo</h4><p>Análise das células sanguíneas para avaliação geral de saúde do trabalhador.</p></div>
+        <div class="dcard"><h4>Bioquímica</h4><p>Glicemia, colesterol, triglicerídeos, ureia, creatinina e demais marcadores.</p></div>
+        <div class="dcard"><h4>Urinálise</h4><p>Exame qualitativo e quantitativo da urina.</p></div>
+        <div class="dcard"><h4>Exames Toxicológicos</h4><p>Dosagens de metais pesados e agentes conforme exposição ocupacional.</p></div>
+        <div class="dcard"><h4>Sorologia</h4><p>Exames sorológicos conforme protocolo do PCMSO.</p></div>
+        <div class="dcard"><h4>Outros</h4><p>Exames complementares conforme indicação do médico do trabalho.</p></div>
+      </div>
+    </div>
+    <div class="dcta">
+      <div><h3>A agilidade que sua<br><em>empresa precisa</em></h3><p>Resultados rápidos integrados ao PCMSO</p></div>
+      <button class="btn-cta" onclick="GB();setTimeout(()=>GS('ct-anc'),200)">Saiba mais</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════
+     PÁGINAS SECUNDÁRIAS
+════════════════════════════════════════ -->
+
+<!-- Empresas -->
+<div id="page-empresas" class="page">
+  <div class="spwrap">
+    <div class="sp-hero"><div class="sp-inner">
+      <button class="backbtn" onclick="SP('home')">← Voltar</button>
+      <h1>Área de <em>Empresas</em></h1>
+      <p>Soluções corporativas para organizações de todos os portes em Franca e região.</p>
+    </div></div>
+    <div class="sp-body">
+      <p>A MedClin oferece <strong>contratos personalizados</strong> para manter sua empresa em conformidade com todas as Normas Regulamentadoras. Atendemos empresas de pequeno, médio e grande porte.</p>
+      <ul class="dl" style="margin-top:1.25rem">
+        <li>Atendimento presencial na clínica e in-company, na sede da empresa</li>
+        <li>Controle de indicadores e vencimentos via software especializado</li>
+        <li>Visitas técnicas periódicas com relatórios detalhados</li>
+        <li>Auditoria e propostas de melhoria contínua</li>
+        <li>Suporte online para demandas emergenciais</li>
+      </ul>
+      <div style="margin-top:2rem">
+        <button class="btn-primary" onclick="SP('home');setTimeout(()=>GS('ct-anc'),200)">Solicitar Proposta para Empresa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Parceiros -->
+<div id="page-parceiros" class="page">
+  <div class="spwrap">
+    <div class="sp-hero"><div class="sp-inner">
+      <button class="backbtn" onclick="SP('home')">← Voltar</button>
+      <h1><em>Parceiros</em></h1>
+      <p>Ofereça serviços de saúde ocupacional aos seus clientes como parceiro MedClin.</p>
+    </div></div>
+    <div class="sp-body">
+      <p>A MedClin mantém parcerias com escritórios de contabilidade, departamentos de RH, sindicatos e clínicas para oferecer serviços integrados em toda a região de Franca e interior de São Paulo.</p>
+      <div style="margin-top:2rem">
+        <button class="btn-primary" onclick="SP('home');setTimeout(()=>GS('ct-anc'),200)">Seja nosso Parceiro</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ════════════════════════════════════════
+   LÓGICA DE NAVEGAÇÃO (intacta)
+════════════════════════════════════════ */
+var last = 'home';
+
+function SP(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  var el = document.getElementById('page-' + n);
+  if (el) { el.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  if (n !== 'home') last = n;
+  closeMob();
+}
+
+function SD(s) {
+  last = 'home';
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  var el = document.getElementById('page-detail-' + s);
+  if (el) { el.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+}
+
+function GB() { SP('home'); }
+
+function GS(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-home').classList.add('active');
+  setTimeout(function () {
+    var el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+  }, 60);
+  closeMob();
+}
+
+/* Menu hamburger */
+var menuBtn = document.getElementById('menu-btn');
+var mobileMenu = document.getElementById('mobile-menu');
+menuBtn.addEventListener('click', function () {
+  mobileMenu.classList.toggle('open');
+});
+function closeMob() {
+  mobileMenu.classList.remove('open');
+}
+
+/* Formulário */
+document.getElementById('fsub').addEventListener('click', function () {
+  this.textContent = '✓ Mensagem enviada!';
+  this.style.background = '#16A34A';
+  setTimeout(() => {
+    this.textContent = 'Enviar mensagem';
+    this.style.background = '';
+  }, 3500);
+});
+
+/* Nav scroll shadow */
+window.addEventListener('scroll', function () {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 8);
+});
+</script>
+</body>
+</html>
